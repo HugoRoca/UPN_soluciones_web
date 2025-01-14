@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script>
+            function showImage(objImg) {
+                imgSelect = objImg.src;
+                imgCenter = document.getElementById("imgMain");
+                imgCenter.src = imgSelect;
+            }
+            
+            function divActive(obj) {
+                obj.style.backgroundColor = "#d7f3ff";
+            }
+            
+            function divNormal(obj) {
+                obj.style.backgroundColor = "#eaeaea";
+            }
+        </script>
+    </head>
+    <body>
+        <table>
+            <tr>
+                <td>
+                    <img src="facebook.png" alt="facebook" width="80" height="80" onmouseover="showImage(this)"/>
+                </td>
+                <td>
+                    <img src="instagram.png" alt="instagram" width="80" height="80" onmouseover="showImage(this)"/>
+                </td>
+                <td>
+                    <img src="x.png" alt="x" width="80" height="80" onmouseover="showImage(this)"/>
+                </td>
+                <td>
+                    <img src="whatsapp.png" alt="whatsapp" width="80" height="80" onmouseover="showImage(this)"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <img id="imgMain" alt="current image" width="300" height="300"/>
+                </td>
+            </tr>
+        </table>
+        
+        <div id="layer_01" style="background-color: #d7f3ff" onmouseover="divActive(this)" onmouseout="divNormal(this)">
+            Texto en bloque 1
+        </div>
+        <div id="layer_02" style="background-color: #eaeaea" onmouseover="divActive(this)" onmouseout="divNormal(this)">
+            Texto en bloque 2
+        </div>
+        <div id="layer_03" style="background-color: #eaeaea" onmouseover="divActive(this)" onmouseout="divNormal(this)">
+            Texto en bloque 3
+        </div>
+    </body>
+</html>
