@@ -1,0 +1,21 @@
+services:
+  mysql:
+    image: mysql:8.0  # Usamos la versión 8.0 de MySQL
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: root  # Contraseña para el usuario root
+      MYSQL_DATABASE: dentalclinic         # Nombre de la base de datos
+      #MYSQL_USER: root                 # Usuario de la base de datos
+      MYSQL_PASSWORD: root         # Contraseña del usuario
+    ports:
+      - "3306:3306"  # Mapea el puerto 3306 del contenedor al puerto 3306 del host
+    volumes:
+      - mysql-data:/var/lib/mysql  # Volumen para persistir los datos de MySQL
+    networks:
+      - my-network
+
+volumes:
+  mysql-data:  # Define un volumen para persistir los datos de MySQL
+
+networks:
+  my-network:  # Define una red para conectar los servicios
