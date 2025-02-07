@@ -27,15 +27,14 @@ public class SecurityConfig {
                 .anyRequest().authenticated() // Protege el resto de rutas
             )
             .formLogin(login -> login // Activa el login para rutas protegidas
-                .loginPage("/login") // Página de login (opcional)
                 .permitAll()
             )
             .httpBasic(); // Activa autenticación básica
 
         return http.build();
     }
-   /*  
-   
+    
+/*    
 @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

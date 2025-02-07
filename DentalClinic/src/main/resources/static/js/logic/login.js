@@ -19,13 +19,12 @@ $("#loginForm").on("submit", function(event) {
         contentType: "application/json",
         data: JSON.stringify({ username, password }),
         success: function(data) {
-            alert("Login exitoso, bienvenido " + data.username);
             localStorage.setItem("token", JSON.stringify(data)); // Asegúrate de guardar los datos correctamente en localStorage
+            location.href = "/dashboard";
         },
         error: function(xhr, status, error) {
             $("#notification").show();
             $("#notification").html("Usuario y/o contraseña incorrectas.");
-            alert("Error en el login: " + xhr.statusText);
         }
     });
 });
