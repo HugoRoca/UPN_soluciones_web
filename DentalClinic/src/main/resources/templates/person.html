@@ -190,17 +190,21 @@
 
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">Historial Clínico</h1>
+                    <h1 class="h2">Personas</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <div class="btn-group me-2">
+                            <button type="button" id="add-person" class="btn btn-lg btn-primary">Agregar +</button>
+                        </div>
+                    </div>
                 </div>
-                <table id="historialTable" class="table table-striped" style="width:100%">
+                <table id="personTable" class="table table-striped" style="width:100%">
                     <thead>
                         <tr>
                             <th></th>
-                            <th>Nombres</th>
-                            <th>Apellidos</th>
-                            <th>Fecha</th>
-                            <th>Diagnóstico</th>
-                            <th>Acciones</th>
+                            <th>Documento</th>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Celular</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -210,34 +214,82 @@
         </div>
     </div>
 
-    <div class="modal fade bd-example-modal-lg" id="consultationModal" tabindex="-1" aria-labelledby="consultationModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+    <div class="modal fade" id="personModal" tabindex="-1" aria-labelledby="personModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="consultationModalLabel">Detalles de la Consulta</h5>
+                    <h5 class="modal-title" id="personModalLabel">Editar Persona</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- Aquí se mostrará la información detallada -->
-                    <p><strong>Fecha de Consulta:</strong> <span id="consultationDate"></span></p>
-                    <p><strong>Diagnóstico:</strong> <span id="diagnosis"></span></p>
-                    <p><strong>Observaciones:</strong> <span id="observations"></span></p>
-                    <hr>
-                    <h6>Datos del Paciente</h6>
-                    <p><strong>Nombre:</strong> <span id="patientName"></span></p>
-                    <p><strong>Apellidos:</strong> <span id="patientLastName"></span></p>
-                    <p><strong>Tipo de Documento:</strong> <span id="documentType"></span></p>
-                    <p><strong>Número de Documento:</strong> <span id="documentNumber"></span></p>
-                    <p><strong>Dirección:</strong> <span id="address"></span></p>
-                    <p><strong>Teléfono:</strong> <span id="phone"></span></p>
-                    <p><strong>Email:</strong> <span id="email"></span></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <form id="personForm">
+                        <input type="hidden" id="personId">
+
+                        <div class="mb-3">
+                            <label for="documentType" class="form-label">Tipo de Documento</label>
+                            <select id="documentType" class="form-control">
+                                <option value="DNI">DNI</option>
+                                <option value="Pasaporte">Pasaporte</option>
+                                <option value="Carnet de Extranjería">Carnet de Extranjería</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="documentNumber" class="form-label">Número de Documento</label>
+                            <input type="text" class="form-control" id="documentNumber">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="name">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="lastName" class="form-label">Apellidos</label>
+                            <input type="text" class="form-control" id="lastName">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="email">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Teléfono</label>
+                            <input type="text" class="form-control" id="phone">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Dirección</label>
+                            <input type="text" class="form-control" id="address">
+                        </div>
+
+                        <button type="button" class="btn btn-primary" id="savePerson">Guardar</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-custom-person">¿Estás seguro de que deseas eliminar este registro?</p>
+                    <input type="hidden" id="deletePersonId">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmDelete">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
     <script th:src="@{/js/jquery.min.js}"></script>
@@ -254,6 +306,6 @@
     <script th:src="@{/js/moment.min.js}"></script>
     <script th:src="@{/js/datetime-moment.js}"></script>
     <script th:src="@{/js/datetime.js}"></script>
-    <script th:src="@{/js/logic/medicalhistory.js}"></script>
+    <script th:src="@{/js/logic/person.js}"></script>
 </body>
 </html>

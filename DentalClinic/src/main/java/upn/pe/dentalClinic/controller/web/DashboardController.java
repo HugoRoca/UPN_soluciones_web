@@ -27,4 +27,9 @@ public class DashboardController {
     public String medicalHistory() {
         return "medicalhistory";
     }
+    
+    @GetMapping("/person")
+    public String person() {
+        return "person";
+    }
 }
