@@ -28,8 +28,8 @@ public class DashboardController {
         return "medicalhistory";
     }
     
-    @GetMapping("/person")
+    @GetMapping("/patient")
     public String person() {
-        return "person";
+        return "patient";
     }
 }

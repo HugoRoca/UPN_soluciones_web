@@ -5,8 +5,8 @@
 
 package upn.pe.dentalClinic.controller.api;
 
-import upn.pe.dentalClinic.model.MedicalHistoryModel;
-import upn.pe.dentalClinic.service.MedicalHistoryService;
+import upn.pe.dentalClinic.model.MedicalRecordModel;
+import upn.pe.dentalClinic.service.MedicalRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,15 +20,14 @@ import java.util.List;
  * @author hugoroca
  */
 @RestController
-@RequestMapping("/api/medical-history")
-public class MedicalHistoryController {
-    
+@RequestMapping("/api/medical-record")
+public class MedicalRecordController {
     @Autowired
-    private MedicalHistoryService medicalHistoryService;
+    private MedicalRecordService medicalRecordService;
     
     @GetMapping("")
-    public ResponseEntity<List<MedicalHistoryModel>> getAllMedicalHistories() {
-        List<MedicalHistoryModel> history = medicalHistoryService.getAllMedicalHistories();
+    public ResponseEntity<List<MedicalRecordModel>> getAllMedicalRecords() {
+        List<MedicalRecordModel> history = medicalRecordService.getAllMedicalRecords();
         return ResponseEntity.ok(history);
     }
 }

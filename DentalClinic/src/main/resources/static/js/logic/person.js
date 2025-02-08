@@ -8,11 +8,10 @@ function editPerson(personData) {
     $('#personId').val(personData.id);
     $('#documentType').val(personData.documentType);
     $('#documentNumber').val(personData.documentNumber);
-    $('#name').val(personData.name);
+    $('#name').val(personData.firstName);
     $('#lastName').val(personData.lastName);
     $('#email').val(personData.email);
     $('#phone').val(personData.phone);
-    $('#address').val(personData.address);
 
     const modal = new bootstrap.Modal(document.getElementById('personModal'));
     modal.show();
@@ -30,7 +29,6 @@ function addPerson() {
     $('#lastName').val('');
     $('#email').val('');
     $('#phone').val('');
-    $('#address').val('');
 
     const modal = new bootstrap.Modal(document.getElementById('personModal'));
     modal.show();
@@ -79,7 +77,7 @@ $(document).ready(function () {
         const personData = {
             documentType: $('#documentType').val(),
             documentNumber: $('#documentNumber').val(),
-            name: $('#name').val(),
+            firstName: $('#name').val(),
             lastName: $('#lastName').val(),
             email: $('#email').val(),
             phone: $('#phone').val(),
@@ -89,7 +87,7 @@ $(document).ready(function () {
         if (isNewPerson) {
             // Crear persona (POST)
             $.ajax({
-                url: "/api/person",
+                url: "/api/patient",
                 type: "POST",
                 contentType: "application/json",
                 data: JSON.stringify(personData),
@@ -107,7 +105,7 @@ $(document).ready(function () {
             // Editar persona (PUT)
             const personId = $('#personId').val();
             $.ajax({
-                url: `/api/person/${personId}`,
+                url: `/api/patient/${personId}`,
                 type: "PUT",
                 contentType: "application/json",
                 data: JSON.stringify(personData),
@@ -127,7 +125,7 @@ $(document).ready(function () {
 
     $('#personTable').DataTable({
         "ajax": {
-            "url": "/api/person",
+            "url": "/api/patient",
             "dataSrc": ""
         },
         "columns": [
@@ -144,7 +142,7 @@ $(document).ready(function () {
 
                 }
             },
-            {"data": "name"},
+            {"data": "firstName"},
             {"data": "lastName"},
             {"data": "phone"},
             {

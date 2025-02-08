@@ -8,35 +8,41 @@ function formatDate(dateString) {
         minute: '2-digit'
     });
 }
-;
 
-function seeMore(consultationData) {
-    $('#consultationDate').text(formatDate(consultationData.consultation_date));
-    $('#diagnosis').text(consultationData.diagnosis);
-    $('#observations').text(consultationData.observations);
-    $('#patientName').text(consultationData.person.name);
-    $('#patientLastName').text(consultationData.person.lastName);
-    $('#documentType').text(consultationData.person.documentType);
-    $('#documentNumber').text(consultationData.person.documentNumber);
-    $('#address').text(consultationData.person.address);
-    $('#phone').text(consultationData.person.phone);
-    $('#email').text(consultationData.person.email);
+function showConsultationModal(consultation) {
+    // Paciente
+    $('#patientDocument').text(`${consultation.patient.documentType} - ${consultation.patient.documentNumber}`);
+    $('#patientName').text(`${consultation.patient.firstName} ${consultation.patient.lastName}`);
+    $('#patientPhone').text(consultation.patient.phone);
+    $('#patientEmail').text(consultation.patient.email);
+    $('#patientBirthDate').text(new Date(consultation.patient.birthDate).toLocaleDateString());
+    $('#patientRegistrationDate').text(new Date(consultation.patient.registrationDate).toLocaleString());
 
-    // Mostrar la modal
+    // Doctor
+    $('#doctorName').text(`${consultation.doctor.firstName} ${consultation.doctor.lastName}`);
+    $('#doctorSpecialty').text(consultation.doctor.specialty);
+    $('#doctorPhone').text(consultation.doctor.phone);
+    $('#doctorEmail').text(consultation.doctor.email);
+
+    // Consulta
+    $('#consultationDate').text(new Date(consultation.consultationDate).toLocaleString());
+    $('#diagnosis').text(consultation.diagnosis);
+    $('#treatment').text(consultation.treatment);
+
+    // Mostrar el modal
     const modal = new bootstrap.Modal(document.getElementById('consultationModal'));
     modal.show();
 }
-;
 
 $(document).ready(function () {
     $(document).on('click', '.see-more', function () {
         const data = JSON.parse($(this).attr('data-info'));
-        seeMore(data);
+        showConsultationModal(data);
     });
 
     $('#historialTable').DataTable({
         "ajax": {
-            "url": "/api/medical-history",
+            "url": "/api/medical-record",
             "dataSrc": ""
         },
         "columns": [
@@ -46,10 +52,22 @@ $(document).ready(function () {
                 data: null,
                 defaultContent: ''
             },
-            {"data": "person.name"},
-            {"data": "person.lastName"},
-            {"data": "consultation_date"},
+            {
+                "data": null,
+                "render": function (data, type, row) {
+                    return `${row.patient.firstName} ${row.patient.lastName}`;
+
+                }
+            },
+            {
+                "data": null,
+                "render": function (data, type, row) {
+                    return `${row.doctor.firstName} ${row.doctor.lastName}`;
+
+                }
+            },
             {"data": "diagnosis"},
+            {"data": "consultationDate"},
             {
                 "data": null,
                 "render": function (data, type, row) {
@@ -60,8 +78,8 @@ $(document).ready(function () {
         responsive: true,
         pageLength: 15,
         columnDefs: [{
-                targets: 3,
-                render: $.fn.dataTable.render.moment('YYYY-MM-DDTHH:mm:ss.SSSSZ', 'DD/MM/YYYY')
+                targets: 4,
+                render: $.fn.dataTable.render.moment('YYYY-MM-DDTHH:mm:ss', 'DD/MM/YYYY')
             }],
         layout: {
             topStart: {

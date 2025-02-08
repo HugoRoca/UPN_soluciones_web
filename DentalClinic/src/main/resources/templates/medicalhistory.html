@@ -167,9 +167,9 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link d-flex align-items-center gap-2" href="/person">
+                                <a class="nav-link d-flex align-items-center gap-2" href="/patient">
                                     <svg class="bi"><use xlink:href="#file-earmark"/></svg>
-                                    Personas
+                                    Pacientes
                                 </a>
                             </li>
                         </ul>
@@ -196,10 +196,10 @@
                     <thead>
                         <tr>
                             <th></th>
-                            <th>Nombres</th>
-                            <th>Apellidos</th>
-                            <th>Fecha</th>
+                            <th>Paciente</th>
+                            <th>Doctor</th>
                             <th>Diagnóstico</th>
+                            <th>Fecha</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -210,27 +210,36 @@
         </div>
     </div>
 
-    <div class="modal fade bd-example-modal-lg" id="consultationModal" tabindex="-1" aria-labelledby="consultationModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+    <div class="modal fade" id="consultationModal" tabindex="-1" aria-labelledby="consultationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="consultationModalLabel">Detalles de la Consulta</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- Aquí se mostrará la información detallada -->
+                    <h5 class="text-primary">Datos del Paciente</h5>
+                    <p><strong>Documento:</strong> <span id="patientDocument"></span></p>
+                    <p><strong>Nombre:</strong> <span id="patientName"></span></p>
+                    <p><strong>Teléfono:</strong> <span id="patientPhone"></span></p>
+                    <p><strong>Email:</strong> <span id="patientEmail"></span></p>
+                    <p><strong>Fecha de Nacimiento:</strong> <span id="patientBirthDate"></span></p>
+                    <p><strong>Fecha de Registro:</strong> <span id="patientRegistrationDate"></span></p>
+
+                    <hr>
+
+                    <h5 class="text-primary">Datos del Doctor</h5>
+                    <p><strong>Nombre:</strong> <span id="doctorName"></span></p>
+                    <p><strong>Especialidad:</strong> <span id="doctorSpecialty"></span></p>
+                    <p><strong>Teléfono:</strong> <span id="doctorPhone"></span></p>
+                    <p><strong>Email:</strong> <span id="doctorEmail"></span></p>
+
+                    <hr>
+
+                    <h5 class="text-primary">Detalles de la Consulta</h5>
                     <p><strong>Fecha de Consulta:</strong> <span id="consultationDate"></span></p>
                     <p><strong>Diagnóstico:</strong> <span id="diagnosis"></span></p>
-                    <p><strong>Observaciones:</strong> <span id="observations"></span></p>
-                    <hr>
-                    <h6>Datos del Paciente</h6>
-                    <p><strong>Nombre:</strong> <span id="patientName"></span></p>
-                    <p><strong>Apellidos:</strong> <span id="patientLastName"></span></p>
-                    <p><strong>Tipo de Documento:</strong> <span id="documentType"></span></p>
-                    <p><strong>Número de Documento:</strong> <span id="documentNumber"></span></p>
-                    <p><strong>Dirección:</strong> <span id="address"></span></p>
-                    <p><strong>Teléfono:</strong> <span id="phone"></span></p>
-                    <p><strong>Email:</strong> <span id="email"></span></p>
+                    <p><strong>Tratamiento:</strong> <span id="treatment"></span></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -238,6 +247,7 @@
             </div>
         </div>
     </div>
+
 
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
     <script th:src="@{/js/jquery.min.js}"></script>
