@@ -59,7 +59,7 @@ $(document).ready(function () {
         const personId = $('#deletePersonId').val();
 
         $.ajax({
-            url: `/api/person/${personId}`,
+            url: `/api/patient/${personId}`,
             type: 'DELETE',
             success: function (response) {
                 alert('Registro eliminado correctamente');
@@ -67,6 +67,11 @@ $(document).ready(function () {
                 $('#personTable').DataTable().ajax.reload(); // Recargar la tabla
             },
             error: function (error) {
+                if (error.responseJSON.message.includes("foreign")) {
+                    alert(`No se puede eliminar este registro, tiene historia clínica!`);
+                    return;
+                }
+
                 alert('Error al eliminar el registro');
                 console.error(error);
             }
