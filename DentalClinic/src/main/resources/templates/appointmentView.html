@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="auto" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+    <head>
+        <title>Dashboard - Clínica Dental</title>
+    </head>
+    <body>
+        <main layout:fragment="content">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Gestión de Citas</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="btn-group me-2">
+                        <button type="button" id="add-appointment" class="btn btn-lg btn-primary">Agregar +</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label for="statusFilter" class="form-label">Filtrar por Estado</label>
+                    <select id="statusFilter" class="form-select">
+                        <option value="">Todos</option>
+                        <option value="PENDIENTE">Pendiente</option>
+                        <option value="CONFIRMADO">Confirmado</option>
+                        <option value="CANCELADO">Cancelado</option>
+                        <option value="COMPLETADO">Completado</option>
+                    </select>
+                </div>
+                <div class="col-3">
+                    <label for="typeFilter" class="form-label">Filtrar por Tipo</label>
+                    <select id="typeFilter" class="form-select">
+                        <option value="">Todos</option>
+                        <option value="SALUD">Salud</option>
+                        <option value="ESTETICO">Estetico</option>
+                    </select>
+                </div>
+            </div>
+            <table id="appointmentsTable" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Tipo</th>
+                        <th>Motivo</th>
+                        <th>Paciente</th>
+                        <th>Doctor</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+            <div class="modal fade" id="appointmentModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Gestionar Cita</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="appointmentForm">
+                                <input type="hidden" id="appointmentId">
+
+                                <!-- Selección de Paciente -->
+                                <div class="mb-3">
+                                    <label for="patientSelect" class="form-label">Paciente</label>
+                                    <select id="patientSelect" class="form-select" style="width: 100%"></select>
+                                </div>
+
+                                <!-- Selección de Doctor -->
+                                <div class="mb-3">
+                                    <label for="doctorSelect" class="form-label">Doctor</label>
+                                    <select id="doctorSelect" class="form-select" style="width: 100%">
+                                        <option value="">Cargando doctores...</option>
+                                    </select>
+                                </div>
+
+                                <!-- Fecha de Cita -->
+                                <div class="mb-3">
+                                    <label for="appointmentDate" class="form-label">Fecha</label>
+                                    <input type="datetime-local" id="appointmentDate" class="form-control">
+                                </div>
+
+                                <!-- Asunto -->
+                                <div class="mb-3">
+                                    <label for="subject" class="form-label">Motivo de cita</label>
+                                    <input type="text" id="subject" class="form-control">
+                                </div>
+
+                                <!-- Estado -->
+                                <div class="mb-3">
+                                    <label for="status" class="form-label">Estado</label>
+                                    <select id="status" class="form-select">
+                                        <option value="PENDIENTE">Pendiente</option>
+                                        <option value="CONFIRMADO">Confirmado</option>
+                                        <option value="CANCELADO">Cancelado</option>
+                                        <option value="COMPLETADO">Completado</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="type" class="form-label">Tipo</label>
+                                    <select id="type" class="form-select">
+                                        <option value="">Todos</option>
+                                        <option value="SALUD">Salud</option>
+                                        <option value="ESTETICO">Estetico</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" id="saveAppointment">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script th:src="@{/js/logic/appointment.js}"></script>
+        </main>
+    </body>
+</html>

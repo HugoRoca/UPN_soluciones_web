@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 package upn.pe.dentalClinic.controller.api;
 
 import upn.pe.dentalClinic.model.DoctorModel;
@@ -19,17 +18,18 @@ import java.util.Optional;
  * @author hugoroca
  */
 @RestController
-@RequestMapping("/api/dcotor")
+@RequestMapping("/api/doctor")
 public class DoctorController {
+
     @Autowired
     private DoctorService doctorService;
-    
+
     @GetMapping("")
     public ResponseEntity<List<DoctorModel>> getAllDoctor() {
         List<DoctorModel> lstDoctor = doctorService.getAllDoctor();
         return ResponseEntity.ok(lstDoctor);
     }
-    
+
     @GetMapping("/{id}")
     public ResponseEntity<DoctorModel> getDoctorById(@PathVariable Integer id) {
         Optional<DoctorModel> doctor = doctorService.getDoctorById(id);
@@ -41,7 +41,7 @@ public class DoctorController {
         DoctorModel newDoctor = doctorService.saveDoctor(doctor);
         return ResponseEntity.ok(newDoctor);
     }
-    
+
     @PutMapping("/{id}")
     public ResponseEntity<?> updateDoctor(@PathVariable Integer id, @RequestBody DoctorModel doctorDetails) {
         Optional<DoctorModel> doctorOptional = doctorService.getDoctorById(id);
@@ -68,5 +68,14 @@ public class DoctorController {
         }
         doctorService.deleteDoctor(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<DoctorModel>> searchDoctor(@RequestParam(defaultValue = "") String query) {
+        List<DoctorModel> doctors;
+
+        doctors = doctorService.searchDoctor(query);
+
+        return ResponseEntity.ok(doctors);
     }
 }

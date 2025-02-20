@@ -38,4 +38,8 @@ public class PatientService {
     public void deletePatient(Integer id) {
         patientRepository.deleteById(id);
     }
+    
+    public List<PatientModel> searchPatients(String query) {
+        return patientRepository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(query, query);
+    }
 }

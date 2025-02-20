@@ -52,6 +52,21 @@ CREATE TABLE madical_record (
     FOREIGN KEY (doctor_id) REFERENCES doctor(doctor_id) ON DELETE CASCADE
 );
 
+CREATE TABLE appointment (
+    appointment_id INT PRIMARY KEY AUTO_INCREMENT,
+    patient_id INT NOT NULL,
+    doctor_id INT NOT NULL,
+    appointment_date DATETIME NOT NULL,
+    subject TEXT,
+    type ENUM('ESTETICO', 'SALUD'),
+    status ENUM('PENDIENTE', 'CONFIRMADO', 'CANCELADO', 'COMPLETADO') DEFAULT 'PENDIENTE',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (patient_id) REFERENCES patient(patient_id) ON DELETE CASCADE,
+    FOREIGN KEY (doctor_id) REFERENCES doctor(doctor_id) ON DELETE CASCADE,
+    UNIQUE (doctor_id, appointment_date)
+);
+
+select * from appointment
 select * from MedicalRecord
 
 
@@ -224,4 +239,59 @@ VALUES
 (32, 4, '2024-05-09 09:40:00', 'Dientes impactados', 'Extracción quirúrgica de terceros molares'),
 (1, 9, '2024-05-10 16:30:00', 'Infección periapical', 'Endodoncia y antibióticos');
 
-select * from MedicalRecord
+select * from medicalRecord
+
+
+INSERT INTO appointment (patient_id, doctor_id, appointment_date, subject, type, status) VALUES
+(1, 1, '2025-02-12 09:00:00', 'Evaluación de carillas dentales', 'ESTETICO', 'CONFIRMADO'),
+(2, 2, '2025-02-12 10:00:00', 'Dolor de muela', 'SALUD', 'PENDIENTE'),
+(3, 3, '2025-02-12 11:00:00', 'Limpieza dental profunda', 'SALUD', 'COMPLETADO'),
+(4, 4, '2025-02-12 12:00:00', 'Consulta sobre ortodoncia', 'SALUD', 'CONFIRMADO'),
+(5, 5, '2025-02-12 13:00:00', 'Blanqueamiento dental', 'ESTETICO', 'CANCELADO'),
+(6, 6, '2025-02-12 14:00:00', 'Consulta post-tratamiento', 'SALUD', 'PENDIENTE'),
+(7, 7, '2025-02-12 15:00:00', 'Evaluación para implantes', 'SALUD', 'COMPLETADO'),
+(8, 8, '2025-02-12 16:00:00', 'Extracción de muela del juicio', 'SALUD', 'CONFIRMADO'),
+(9, 9, '2025-02-12 17:00:00', 'Consulta de odontopediatría', 'SALUD', 'CANCELADO'),
+(10, 10, '2025-02-12 18:00:00', 'Diseño de sonrisa', 'ESTETICO', 'PENDIENTE'),
+(11, 1, '2025-02-13 09:00:00', 'Dolor de encías', 'SALUD', 'CONFIRMADO'),
+(12, 2, '2025-02-13 10:00:00', 'Prótesis dental removible', 'SALUD', 'COMPLETADO'),
+(13, 3, '2025-02-13 11:00:00', 'Revisión de ortodoncia', 'SALUD', 'PENDIENTE'),
+(14, 4, '2025-02-13 12:00:00', 'Sensibilidad dental', 'SALUD', 'CONFIRMADO'),
+(15, 5, '2025-02-13 13:00:00', 'Carillas de porcelana', 'ESTETICO', 'CANCELADO'),
+(16, 6, '2025-02-13 14:00:00', 'Cirugía maxilofacial', 'SALUD', 'COMPLETADO'),
+(17, 7, '2025-02-13 15:00:00', 'Dolor en la muela del juicio', 'SALUD', 'PENDIENTE'),
+(18, 8, '2025-02-13 16:00:00', 'Colocación de resina', 'ESTETICO', 'CONFIRMADO'),
+(19, 9, '2025-02-13 17:00:00', 'Consulta de endodoncia', 'SALUD', 'CANCELADO'),
+(20, 10, '2025-02-13 18:00:00', 'Ortodoncia invisible', 'ESTETICO', 'COMPLETADO'),
+(21, 1, '2025-02-14 09:00:00', 'Evaluación de bruxismo', 'SALUD', 'PENDIENTE'),
+(22, 2, '2025-02-14 10:00:00', 'Extracción de diente dañado', 'SALUD', 'CONFIRMADO'),
+(23, 3, '2025-02-14 11:00:00', 'Colocación de puente dental', 'SALUD', 'COMPLETADO'),
+(24, 4, '2025-02-14 12:00:00', 'Consulta sobre alineadores invisibles', 'ESTETICO', 'CANCELADO'),
+(25, 5, '2025-02-14 13:00:00', 'Dolor en premolares', 'SALUD', 'PENDIENTE'),
+(26, 6, '2025-02-14 14:00:00', 'Evaluación de periodontitis', 'SALUD', 'CONFIRMADO'),
+(27, 7, '2025-02-14 15:00:00', 'Colocación de implantes dentales', 'SALUD', 'COMPLETADO'),
+(28, 8, '2025-02-14 16:00:00', 'Dolor en dientes posteriores', 'SALUD', 'PENDIENTE'),
+(29, 9, '2025-02-14 17:00:00', 'Evaluación para carillas dentales', 'ESTETICO', 'CANCELADO'),
+(30, 10, '2025-02-14 18:00:00', 'Consulta de halitosis', 'SALUD', 'CONFIRMADO'),
+(31, 1, '2025-02-15 09:00:00', 'Evaluación de sensibilidad dental', 'SALUD', 'COMPLETADO'),
+(32, 2, '2025-02-15 10:00:00', 'Tratamiento para aftas bucales', 'SALUD', 'CANCELADO'),
+(33, 3, '2025-02-15 11:00:00', 'Revisión de mordida', 'SALUD', 'PENDIENTE'),
+(34, 4, '2025-02-15 12:00:00', 'Consulta sobre prótesis removible', 'SALUD', 'CONFIRMADO'),
+(35, 5, '2025-02-15 13:00:00', 'Evaluación para diseño de sonrisa', 'ESTETICO', 'COMPLETADO'),
+(36, 6, '2025-02-15 14:00:00', 'Limpieza profunda', 'SALUD', 'PENDIENTE'),
+(37, 7, '2025-02-15 15:00:00', 'Colocación de coronas', 'SALUD', 'CANCELADO'),
+(38, 8, '2025-02-15 16:00:00', 'Dolor en encía superior', 'SALUD', 'CONFIRMADO'),
+(39, 9, '2025-02-15 17:00:00', 'Tratamiento de gingivitis', 'SALUD', 'PENDIENTE'),
+(40, 10, '2025-02-15 18:00:00', 'Consulta sobre odontología estética', 'ESTETICO', 'COMPLETADO'),
+(41, 1, '2025-02-16 09:00:00', 'Revisión de retenedores', 'SALUD', 'CANCELADO'),
+(42, 2, '2025-02-16 10:00:00', 'Consulta sobre mordida cruzada', 'SALUD', 'PENDIENTE'),
+(43, 3, '2025-02-16 11:00:00', 'Tratamiento para recesión gingival', 'SALUD', 'CONFIRMADO'),
+(44, 4, '2025-02-16 12:00:00', 'Dolor en molares superiores', 'SALUD', 'COMPLETADO'),
+(45, 5, '2025-02-16 13:00:00', 'Evaluación de férula de descarga', 'SALUD', 'CANCELADO'),
+(46, 6, '2025-02-16 14:00:00', 'Revisión post-tratamiento de ortodoncia', 'SALUD', 'CONFIRMADO'),
+(47, 7, '2025-02-16 15:00:00', 'Consulta de odontología infantil', 'SALUD', 'PENDIENTE'),
+(48, 8, '2025-02-16 16:00:00', 'Colocación de resina en incisivos', 'ESTETICO', 'COMPLETADO'),
+(1, 9, '2025-02-16 17:00:00', 'Consulta sobre blanqueamiento dental', 'ESTETICO', 'PENDIENTE'),
+(5, 10, '2025-02-16 18:00:00', 'Evaluación para ortodoncia', 'SALUD', 'CONFIRMADO');
+
+

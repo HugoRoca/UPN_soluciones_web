@@ -20,16 +20,21 @@ public class DashboardController {
     @GetMapping("/dashboard")
     public String init() {
         log.info("Start project");
-        return "dashboard";
+        return "dashboardView";
     }
     
     @GetMapping("/medicalhistory")
     public String medicalHistory() {
-        return "medicalhistory";
+        return "medicalrecordView";
     }
     
     @GetMapping("/patient")
-    public String person() {
-        return "patient";
+    public String patint() {
+        return "patientView";
+    }
+    
+    @GetMapping("/appointment")
+    public String appointment() {
+        return "appointmentView";
     }
 }

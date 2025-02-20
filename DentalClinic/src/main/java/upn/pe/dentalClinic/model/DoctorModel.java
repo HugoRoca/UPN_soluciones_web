@@ -21,7 +21,7 @@ public class DoctorModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "doctor_id")
-    private Integer id;
+    private Integer doctorId;
 
     @Column(name = "first_name", nullable = false, length = 100)
     private String firstName;

@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.Optional;
 
 /**
@@ -37,5 +36,9 @@ public class DoctorService {
 
     public void deleteDoctor(Integer id) {
         doctorRepository.deleteById(id);
+    }
+    
+    public List<DoctorModel> searchDoctor(String query) {
+        return doctorRepository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(query, query);
     }
 }

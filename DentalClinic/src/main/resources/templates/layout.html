@@ -12,6 +12,8 @@
         <link th:href="@{/css/dashboard.css}" rel="stylesheet">
         <link th:href="@{/css/dataTables.dataTables.min.css}" rel="stylesheet">
         <link th:href="@{/css/dataTables.bootstrap5.css}" rel="stylesheet">
+        <link th:href="@{/css/select2-bootstrap-5-theme.min.css}" rel="stylesheet">
+        <link th:href="@{/css/select2.min.css}" rel="stylesheet">
         <!-- Custom styles for this template -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
 
@@ -30,6 +32,13 @@
         <script th:src="@{/js/moment.min.js}"></script>
         <script th:src="@{/js/datetime-moment.js}"></script>
         <script th:src="@{/js/datetime.js}"></script>
+        <script th:src="@{/js/select2.min.js}"></script>
+        
+        <style>
+            .table-row-pending {
+                background-color: #f9e79f !important;
+            }
+        </style>
     </head>
     <body>
         <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
@@ -133,6 +142,12 @@
                                 <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="/dashboard">
                                     <svg class="bi"><use xlink:href="#house-fill"/></svg>
                                     Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="/appointment">
+                                    <svg class="bi"><use xlink:href="#calendar3"/></svg>
+                                    Gestión de Citas
                                 </a>
                             </li>
                             <li class="nav-item">
