@@ -40,8 +40,13 @@ public class AppointmentService {
     public AppointmentModel updateAppointment(Integer id, AppointmentModel newAppointment) {
         return appointmentRepository.findById(id)
                 .map(existingAppointment -> {
+                    existingAppointment.setPatient(newAppointment.getPatient());
+                    existingAppointment.setDoctor(newAppointment.getDoctor());
                     existingAppointment.setAppointmentDate(newAppointment.getAppointmentDate());
                     existingAppointment.setStatus(newAppointment.getStatus());
+                    existingAppointment.setSubject(newAppointment.getSubject());
+                    existingAppointment.setType(newAppointment.getType());
+                    
                     return appointmentRepository.save(existingAppointment);
                 })
                 .orElseThrow(() -> new RuntimeException("Cita no encontrada con ID: " + id));

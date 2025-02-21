@@ -43,9 +43,9 @@ $(document).ready(function () {
     $(document).on('click', '.delete-person', function () {
         const data = JSON.parse($(this).attr('data-info'));
 
-        $('#deletePersonId').val(data.id);
+        $('#idToDelete').val(data.id);
 
-        $('.text-custom-person').html(`¿Estás seguro de que deseas eliminar este registro de la persona ${data.name} ${data.lastName}?`);
+        $('.text-custom-modal').html(`¿Estás seguro de que deseas eliminar este registro de la persona ${data.name} ${data.lastName}?`);
 
         const modal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
         modal.show();
@@ -56,7 +56,7 @@ $(document).ready(function () {
     });
 
     $('#confirmDelete').click(function () {
-        const personId = $('#deletePersonId').val();
+        const personId = $('#idToDelete').val();
 
         $.ajax({
             url: `/api/patient/${personId}`,

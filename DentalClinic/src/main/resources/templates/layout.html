@@ -33,14 +33,130 @@
         <script th:src="@{/js/datetime-moment.js}"></script>
         <script th:src="@{/js/datetime.js}"></script>
         <script th:src="@{/js/select2.min.js}"></script>
-        
+
         <style>
             .table-row-pending {
                 background-color: #f9e79f !important;
             }
+
+            #loadingOverlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000000;
+                display: none;
+            }
+
+            #loadingBox {
+                background: white;
+                padding: 20px;
+                border-radius: 10px;
+                text-align: center;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            }
+
+            #alertContainer {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 1050;
+                max-width: 400px;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .custom-alert {
+                border-radius: 6px;
+                padding: 12px 15px;
+                font-size: 0.95rem; /* Tamaño de letra más balanceado */
+                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                min-width: 300px;
+            }
+
+            .alert-icon {
+                font-size: 1.4rem;
+                opacity: 0.8;
+            }
+
+            .alert-text {
+                flex-grow: 1;
+                font-weight: 500;
+            }
+
+
         </style>
+
+        <script>
+            function showLoading(message = "Cargando...") {
+                document.getElementById("loadingMessage").textContent = message;
+                document.getElementById("loadingOverlay").style.display = "flex";
+            }
+
+            function hideLoading() {
+                document.getElementById("loadingOverlay").style.display = "none";
+            }
+
+            function showAlert(message, type = "success", duration = 5000) {
+                const alertContainer = document.getElementById("alertContainer");
+
+                // Definir los íconos según el tipo de alerta
+                const icons = {
+                    success: "bi-check-circle-fill",
+                    danger: "bi-exclamation-triangle-fill",
+                    warning: "bi-exclamation-circle-fill",
+                    info: "bi-info-circle-fill",
+                };
+
+                // Crear el div de la alerta
+                const alertDiv = document.createElement("div");
+                alertDiv.className = `alert alert-${type} alert-dismissible fade show d-flex align-items-center custom-alert`;
+                alertDiv.role = "alert";
+
+                alertDiv.innerHTML = `
+        <i class="bi ${icons[type] || "bi-info-circle-fill"} alert-icon"></i>
+        <div class="alert-text">${message}</div>
+        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
+    `;
+
+                alertContainer.appendChild(alertDiv);
+
+                // Cerrar la alerta automáticamente después de 'duration' milisegundos
+                setTimeout(() => {
+                    alertDiv.classList.remove("show");
+                    setTimeout(() => alertDiv.remove(), 200);
+                }, duration);
+            }
+
+// Agregar el contenedor de alertas si no existe
+            document.addEventListener("DOMContentLoaded", function () {
+                if (!document.getElementById("alertContainer")) {
+                    const container = document.createElement("div");
+                    container.id = "alertContainer";
+                    document.body.appendChild(container);
+                }
+            });
+
+
+        </script>
     </head>
     <body>
+        <div id="loadingOverlay">
+            <div id="loadingBox">
+                <div class="spinner-border text-primary" role="status"></div>
+                <p id="loadingMessage" class="mt-2">Cargando...</p>
+            </div>
+        </div>
+
         <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
     <symbol id="check2" viewBox="0 0 16 16">
         <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
@@ -156,10 +272,23 @@
                                     Historial Clínico
                                 </a>
                             </li>
+                        </ul>
+
+                        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-body-secondary text-uppercase">
+                            <span>Personas</span>
+                        </h6>
+
+                        <ul class="nav flex-column mb-auto">
                             <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center gap-2" href="/patient">
                                     <svg class="bi"><use xlink:href="#people"/></svg>
                                     Pacientes
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center gap-2" href="/patient">
+                                    <svg class="bi"><use xlink:href="#people"/></svg>
+                                    Doctor
                                 </a>
                             </li>
                         </ul>
@@ -174,6 +303,25 @@
                                 </a>
                             </li>
                         </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Eliminación</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p class="text-custom-modal">¿Estás seguro de que deseas eliminar este registro?</p>
+                            <input type="hidden" id="idToDelete">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-danger" id="confirmDelete">Eliminar</button>
+                        </div>
                     </div>
                 </div>
             </div>

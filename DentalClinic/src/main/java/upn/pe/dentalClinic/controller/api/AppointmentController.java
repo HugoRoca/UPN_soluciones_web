@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author hugoroca
  */
 @RestController
-@RequestMapping("/api/appointments")
+@RequestMapping("/api/appointment")
 public class AppointmentController {
 
     @Autowired

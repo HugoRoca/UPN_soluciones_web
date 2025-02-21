@@ -20,28 +20,30 @@ drop table Patient
 drop table Doctor
 drop table MedicalRecord
 
-CREATE TABLE patient (
-    patient_id INT PRIMARY KEY AUTO_INCREMENT,
-	documenttype VARCHAR(5) NOT NULL,
-	documentnumber VARCHAR(20) NOT NULL,
-    first_name VARCHAR(100) NOT NULL,
-    last_name VARCHAR(100) NOT NULL,
-    phone VARCHAR(15),
-    email VARCHAR(100) UNIQUE,
-    birth_date DATE,
-    registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+select * from appointment
 
-CREATE TABLE doctor (
-    doctor_id INT PRIMARY KEY AUTO_INCREMENT,
-    first_name VARCHAR(100) NOT NULL,
-    last_name VARCHAR(100) NOT NULL,
-    specialty VARCHAR(50),
-    phone VARCHAR(15),
-    email VARCHAR(100) UNIQUE
-);
+	CREATE TABLE patient (
+	    patient_id INT PRIMARY KEY AUTO_INCREMENT,
+		documenttype VARCHAR(5) NOT NULL,
+		documentnumber VARCHAR(20) NOT NULL,
+	    first_name VARCHAR(100) NOT NULL,
+	    last_name VARCHAR(100) NOT NULL,
+	    phone VARCHAR(15),
+	    email VARCHAR(100) UNIQUE,
+	    birth_date DATE,
+	    registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+	);
+	
+	CREATE TABLE doctor (
+	    doctor_id INT PRIMARY KEY AUTO_INCREMENT,
+	    first_name VARCHAR(100) NOT NULL,
+	    last_name VARCHAR(100) NOT NULL,
+	    specialty VARCHAR(50),
+	    phone VARCHAR(15),
+	    email VARCHAR(100) UNIQUE
+	);
 
-CREATE TABLE madical_record (
+CREATE TABLE medical_record (
     record_id INT PRIMARY KEY AUTO_INCREMENT,
     patient_id INT NOT NULL,
     doctor_id INT NOT NULL,
