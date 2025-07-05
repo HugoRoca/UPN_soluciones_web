@@ -8,40 +8,26 @@ CREATE TABLE user (
       lastname VARCHAR(100) NOT NULL
 );
 
-INSERT INTO user (username, password, rol, name, nickname, lastname) VALUES
-    ('jdoe', '123', 'admin', 'John', 'JD', 'Doe'),
-    ('asmith', '123', 'user', 'Alice', 'Ali', 'Smith'),
-    ('bwayne', '123', 'moderator', 'Bruce', 'Bats', 'Wayne'),
-    ('ckent', '123', 'user', 'Clark', 'Supes', 'Kent'),
-    ('pparker', '123', 'editor', 'Peter', 'Spidey', 'Parker');
+CREATE TABLE patient (
+    patient_id INT PRIMARY KEY AUTO_INCREMENT,
+	documenttype VARCHAR(5) NOT NULL,
+	documentnumber VARCHAR(20) NOT NULL,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    phone VARCHAR(15),
+    email VARCHAR(100) UNIQUE,
+    birth_date DATE,
+    registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
-select * from user
-drop table Patient
-drop table Doctor
-drop table MedicalRecord
-
-select * from appointment
-
-	CREATE TABLE patient (
-	    patient_id INT PRIMARY KEY AUTO_INCREMENT,
-		documenttype VARCHAR(5) NOT NULL,
-		documentnumber VARCHAR(20) NOT NULL,
-	    first_name VARCHAR(100) NOT NULL,
-	    last_name VARCHAR(100) NOT NULL,
-	    phone VARCHAR(15),
-	    email VARCHAR(100) UNIQUE,
-	    birth_date DATE,
-	    registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-	);
-	
-	CREATE TABLE doctor (
-	    doctor_id INT PRIMARY KEY AUTO_INCREMENT,
-	    first_name VARCHAR(100) NOT NULL,
-	    last_name VARCHAR(100) NOT NULL,
-	    specialty VARCHAR(50),
-	    phone VARCHAR(15),
-	    email VARCHAR(100) UNIQUE
-	);
+CREATE TABLE doctor (
+    doctor_id INT PRIMARY KEY AUTO_INCREMENT,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    specialty VARCHAR(50),
+    phone VARCHAR(15),
+    email VARCHAR(100) UNIQUE
+);
 
 CREATE TABLE medical_record (
     record_id INT PRIMARY KEY AUTO_INCREMENT,
