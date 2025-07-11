@@ -78,7 +78,7 @@
 ### **FASE 1: Configuración Inicial** 🚀
 
 ```mermaid
-graph TD
+flowchart TD
     A[Crear proyecto Spring Boot] --> B[Configurar pom.xml]
     B --> C[Definir dependencias]
     C --> D[Configurar application.properties]
@@ -96,7 +96,7 @@ graph TD
 ### **FASE 2: Configuración de Base de Datos** 🗄️
 
 ```mermaid
-graph TD
+flowchart TD
     A[Configurar MySQL] --> B[Crear base de datos dentalclinic]
     B --> C[Ejecutar script-db.sql]
     C --> D[Configurar conexión en application.properties]
@@ -109,25 +109,25 @@ graph TD
 ### **FASE 3: Creación de Modelos (Entidades)** 📊
 
 ```mermaid
-graph TD
+flowchart TD
     A[Crear entidades JPA] --> B[PatientModel]
     A --> C[DoctorModel]
     A --> D[AppointmentModel]
     A --> E[MedicalRecordModel]
     A --> F[UserModel]
     
-    B --> B1[@Entity, @Table, @Id, @GeneratedValue]
-    B --> B2[@Column, @Temporal, @JoinColumn]
-    C --> C1[@Entity, @Table, @Id, @GeneratedValue]
-    D --> D1[@Entity, @Table, @ManyToOne, @Enumerated]
-    E --> E1[@Entity, @Table, @Id, @GeneratedValue]
-    F --> F1[@Entity, @Table, @Id, @GeneratedValue]
+    B --> B1[Entity Table Id GeneratedValue]
+    B --> B2[Column Temporal JoinColumn]
+    C --> C1[Entity Table Id GeneratedValue]
+    D --> D1[Entity Table ManyToOne Enumerated]
+    E --> E1[Entity Table Id GeneratedValue]
+    F --> F1[Entity Table Id GeneratedValue]
 ```
 
 ### **FASE 4: Creación de Repositorios** 🔍
 
 ```mermaid
-graph TD
+flowchart TD
     A[Crear interfaces Repository] --> B[IPatientRepository]
     A --> C[IDoctorRepository]
     A --> D[IAppointmentRepository]
@@ -146,28 +146,28 @@ graph TD
 ### **FASE 5: Creación de Servicios** ⚙️
 
 ```mermaid
-graph TD
+flowchart TD
     A[Crear clases Service] --> B[PatientService]
     A --> C[DoctorService]
     A --> D[AppointmentService]
     A --> E[MedicalRecordService]
     A --> F[AuthService]
     
-    B --> B1[@Service, @Autowired Repository]
-    B --> B2[getAllPatient, getPatientById, savePatient, searchPatients]
-    C --> C1[@Service, @Autowired Repository]
-    C --> C2[getAllDoctor, getDoctorById, saveDoctor, searchDoctor]
-    D --> D1[@Service, @Autowired Repository]
-    D --> D2[getAllAppointments, createAppointment, updateAppointment, deleteAppointment]
-    E --> E1[@Service, @Autowired Repository]
-    F --> F1[@Service, @Autowired Repository]
+    B --> B1[Service Autowired Repository]
+    B --> B2[getAllPatient getPatientById savePatient searchPatients]
+    C --> C1[Service Autowired Repository]
+    C --> C2[getAllDoctor getDoctorById saveDoctor searchDoctor]
+    D --> D1[Service Autowired Repository]
+    D --> D2[getAllAppointments createAppointment updateAppointment deleteAppointment]
+    E --> E1[Service Autowired Repository]
+    F --> F1[Service Autowired Repository]
     F --> F2[login method]
 ```
 
 ### **FASE 6: Creación de Controladores** 🎮
 
 ```mermaid
-graph TD
+flowchart TD
     A[Crear Controladores] --> B[Web Controllers]
     A --> C[API Controllers]
     
@@ -180,23 +180,23 @@ graph TD
     C --> C4[MedicalRecordController]
     C --> C5[AuthController]
     
-    C1 --> C1A[@RestController, @RequestMapping]
-    C1 --> C1B[CRUD operations: GET, POST, PUT, DELETE]
-    C2 --> C2A[@RestController, @RequestMapping]
-    C3 --> C3A[@RestController, @RequestMapping]
-    C4 --> C4A[@RestController, @RequestMapping]
-    C5 --> C5A[@RestController, @RequestMapping]
-    C5 --> C5B[@PostMapping /login]
+    C1 --> C1A[RestController RequestMapping]
+    C1 --> C1B[CRUD operations GET POST PUT DELETE]
+    C2 --> C2A[RestController RequestMapping]
+    C3 --> C3A[RestController RequestMapping]
+    C4 --> C4A[RestController RequestMapping]
+    C5 --> C5A[RestController RequestMapping]
+    C5 --> C5B[PostMapping login]
 ```
 
 ### **FASE 7: Configuración de Seguridad** 🔒
 
 ```mermaid
-graph TD
+flowchart TD
     A[Configurar Spring Security] --> B[SecurityConfig]
-    B --> C[@Configuration, @Bean SecurityFilterChain]
+    B --> C[Configuration Bean SecurityFilterChain]
     C --> D[Configurar rutas protegidas]
-    D --> E[/api/** permitAll]
+    D --> E[api permitAll]
     D --> F[anyRequest authenticated]
     C --> G[Desactivar CSRF para pruebas]
     C --> H[Configurar formLogin y httpBasic]
@@ -205,7 +205,7 @@ graph TD
 ### **FASE 8: Creación de Frontend** 🎨
 
 ```mermaid
-graph TD
+flowchart TD
     A[Crear templates Thymeleaf] --> B[Layout principal]
     A --> C[Vistas específicas]
     
@@ -229,20 +229,20 @@ graph TD
 ### **FASE 9: Manejo de Excepciones** ⚠️
 
 ```mermaid
-graph TD
+flowchart TD
     A[Crear sistema de excepciones] --> B[InvalidCredentialsException]
     A --> C[GlobalExceptionHandler]
     
-    B --> B1[@ResponseStatus UNAUTHORIZED]
-    C --> C1[@ControllerAdvice]
-    C --> C2[@ExceptionHandler]
+    B --> B1[ResponseStatus UNAUTHORIZED]
+    C --> C1[ControllerAdvice]
+    C --> C2[ExceptionHandler]
     C --> C3[handleInvalidCredentialsException]
 ```
 
 ### **FASE 10: Utilidades y DTOs** 🛠️
 
 ```mermaid
-graph TD
+flowchart TD
     A[Crear clases utilitarias] --> B[JsonResponseUtil]
     A --> C[DTOs]
     
@@ -250,7 +250,7 @@ graph TD
     B --> B2[error method]
     
     C --> C1[LoginRequest]
-    C --> C2[@Data annotation]
+    C --> C2[Data annotation]
 ```
 
 ---
