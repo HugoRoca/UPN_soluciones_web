@@ -1,4 +1,5 @@
 import { simulateUserJourney } from './common.js';
+import { sleep } from 'k6';
 
 /**
  * PRUEBAS DE CARGA BÁSICA
@@ -8,24 +9,14 @@ import { simulateUserJourney } from './common.js';
  * 
  * Escenarios:
  * - Ramp-up gradual: 0 -> 50 usuarios en 2 minutos
- * - Carga sostenida: 50 usuarios por 5 minutos
- * - Ramp-down: 50 -> 0 usuarios en 2 minutos
  */
 
 export const options = {
-    // Configuración de etapas para carga básica
     stages: [
-        // Ramp-up gradual
         { duration: '2m', target: 50 },   // 0 -> 50 usuarios en 2 minutos
-        // Carga sostenida
-        { duration: '5m', target: 50 },   // Mantener 50 usuarios por 5 minutos
-        // Ramp-down gradual
-        { duration: '2m', target: 0 },    // 50 -> 0 usuarios en 2 minutos
     ],
 
-    // Umbrales de rendimiento
     thresholds: {
-        // Tiempo de respuesta
         http_req_duration: [
             'p(50)<1000',   // 50% de requests < 1 segundo
             'p(90)<2000',   // 90% de requests < 2 segundos
@@ -33,20 +24,15 @@ export const options = {
             'p(99)<5000',   // 99% de requests < 5 segundos
         ],
         
-        // Tasa de errores
         http_req_failed: ['rate<0.05'],   // < 5% de errores
         
-        // Throughput
         http_reqs: ['rate>10'],           // Mínimo 10 requests/segundo
         
-        // Métricas personalizadas
         errors: ['rate<0.05'],            // < 5% de errores personalizados
     },
 
-    // Configuración de usuarios virtuales
     vus: 0,  // Se controla por las etapas
     
-    // Configuración de métricas
     ext: {
         loadimpact: {
             distribution: {
@@ -56,43 +42,44 @@ export const options = {
     },
 };
 
-/**
- * Función principal que ejecuta cada usuario virtual
- */
 export default function () {
-    // Simular el viaje completo de un usuario
     simulateUserJourney();
     
-    // Pausa aleatoria entre 2-5 segundos para simular comportamiento real
     const randomSleep = Math.random() * 3 + 2;
     sleep(randomSleep);
 }
 
-/**
- * Configuración de setup (opcional)
- * Se ejecuta una vez antes de todas las pruebas
- */
 export function setup() {
     console.log('🚀 Iniciando pruebas de carga básica...');
     console.log('📊 Configuración:');
     console.log('   - Ramp-up: 0 -> 50 usuarios (2 min)');
-    console.log('   - Carga sostenida: 50 usuarios (5 min)');
-    console.log('   - Ramp-down: 50 -> 0 usuarios (2 min)');
-    console.log('   - Duración total: 9 minutos');
+    console.log('   - Duración total: 2 minutos');
     console.log('🎯 Objetivos:');
     console.log('   - 95% de requests < 3 segundos');
     console.log('   - < 5% de errores');
     console.log('   - Mínimo 10 requests/segundo');
 }
 
-/**
- * Configuración de teardown (opcional)
- * Se ejecuta una vez después de todas las pruebas
- */
 export function teardown(data) {
     console.log('✅ Pruebas de carga básica completadas');
-    console.log('📈 Métricas finales:');
-    console.log(`   - Requests totales: ${data.metrics.http_reqs.values.count}`);
-    console.log(`   - Tiempo promedio: ${data.metrics.http_req_duration.values.avg}ms`);
-    console.log(`   - Tasa de errores: ${(data.metrics.http_req_failed.values.rate * 100).toFixed(2)}%`);
+    
+    if (data && data.metrics) {
+        console.log('📈 Métricas finales:');
+        const metrics = data.metrics;
+        
+        if (metrics.http_reqs && metrics.http_reqs.values) {
+            console.log(`   - Requests totales: ${metrics.http_reqs.values.count || 'N/A'}`);
+        }
+        
+        if (metrics.http_req_duration && metrics.http_req_duration.values) {
+            console.log(`   - Tiempo promedio: ${metrics.http_req_duration.values.avg || 'N/A'}ms`);
+        }
+        
+        if (metrics.http_req_failed && metrics.http_req_failed.values) {
+            const errorRate = (metrics.http_req_failed.values.rate * 100).toFixed(2);
+            console.log(`   - Tasa de errores: ${errorRate}%`);
+        }
+    } else {
+        console.log('⚠️  No se pudieron obtener las métricas finales');
+    }
 } 

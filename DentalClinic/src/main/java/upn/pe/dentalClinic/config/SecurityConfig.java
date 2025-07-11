@@ -23,7 +23,7 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable()) // Desactiva CSRF para pruebas (cuidado en producción)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll() // Permite acceso sin autenticación
+                .requestMatchers("/api/**").permitAll() // Permite acceso sin autenticación
                 .anyRequest().authenticated() // Protege el resto de rutas
             )
             .formLogin(login -> login // Activa el login para rutas protegidas

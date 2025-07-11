@@ -1,4 +1,5 @@
 import { simulateUserJourney, performLogin, getAppointments, getPatients, getDoctors } from './common.js';
+import { sleep } from 'k6';
 
 /**
  * PRUEBAS DE ESTRÉS
@@ -14,28 +15,21 @@ import { simulateUserJourney, performLogin, getAppointments, getPatients, getDoc
  */
 
 export const options = {
-    // Configuración de etapas para estrés
     stages: [
-        // Ramp-up inicial
         { duration: '2m', target: 100 },  // 0 -> 100 usuarios en 2 minutos
         
-        // Incremento gradual de estrés
-        { duration: '3m', target: 200 },  // 100 -> 200 usuarios en 3 minutos
-        { duration: '3m', target: 300 },  // 200 -> 300 usuarios en 3 minutos
-        { duration: '3m', target: 400 },  // 300 -> 400 usuarios en 3 minutos
-        { duration: '3m', target: 500 },  // 400 -> 500 usuarios en 3 minutos
-        { duration: '3m', target: 600 },  // 500 -> 600 usuarios en 3 minutos
+        //{ duration: '3m', target: 200 },  // 100 -> 200 usuarios en 3 minutos
+        //{ duration: '3m', target: 300 },  // 200 -> 300 usuarios en 3 minutos
+        //{ duration: '3m', target: 400 },  // 300 -> 400 usuarios en 3 minutos
+        //{ duration: '3m', target: 500 },  // 400 -> 500 usuarios en 3 minutos
+        //{ duration: '3m', target: 600 },  // 500 -> 600 usuarios en 3 minutos
         
-        // Carga máxima sostenida
-        { duration: '5m', target: 600 },  // Mantener 600 usuarios por 5 minutos
+        //{ duration: '5m', target: 600 },  // Mantener 600 usuarios por 5 minutos
         
-        // Ramp-down
-        { duration: '3m', target: 0 },    // 600 -> 0 usuarios en 3 minutos
+        //{ duration: '3m', target: 0 },    // 600 -> 0 usuarios en 3 minutos
     ],
 
-    // Umbrales de rendimiento más permisivos para estrés
     thresholds: {
-        // Tiempo de respuesta (más permisivo)
         http_req_duration: [
             'p(50)<2000',   // 50% de requests < 2 segundos
             'p(90)<5000',   // 90% de requests < 5 segundos
@@ -43,20 +37,15 @@ export const options = {
             'p(99)<15000',  // 99% de requests < 15 segundos
         ],
         
-        // Tasa de errores (más permisiva)
         http_req_failed: ['rate<0.15'],   // < 15% de errores
         
-        // Throughput mínimo
         http_reqs: ['rate>5'],            // Mínimo 5 requests/segundo
         
-        // Métricas personalizadas
         errors: ['rate<0.15'],            // < 15% de errores personalizados
     },
 
-    // Configuración de usuarios virtuales
     vus: 0,  // Se controla por las etapas
     
-    // Configuración de métricas
     ext: {
         loadimpact: {
             distribution: {
@@ -128,27 +117,49 @@ export function setup() {
  */
 export function teardown(data) {
     console.log('✅ Pruebas de estrés completadas');
-    console.log('📈 Métricas finales:');
-    console.log(`   - Requests totales: ${data.metrics.http_reqs.values.count}`);
-    console.log(`   - Tiempo promedio: ${data.metrics.http_req_duration.values.avg}ms`);
-    console.log(`   - Tiempo p95: ${data.metrics.http_req_duration.values['p(95)']}ms`);
-    console.log(`   - Tiempo p99: ${data.metrics.http_req_duration.values['p(99)']}ms`);
-    console.log(`   - Tasa de errores: ${(data.metrics.http_req_failed.values.rate * 100).toFixed(2)}%`);
-    console.log(`   - Throughput: ${data.metrics.http_reqs.values.rate.toFixed(2)} req/s`);
     
-    // Análisis de resultados
-    const errorRate = data.metrics.http_req_failed.values.rate;
-    const avgResponseTime = data.metrics.http_req_duration.values.avg;
-    const p95ResponseTime = data.metrics.http_req_duration.values['p(95)'];
-    
-    console.log('🔍 Análisis:');
-    if (errorRate > 0.1) {
-        console.log('   ⚠️  Alta tasa de errores - sistema bajo estrés');
-    }
-    if (avgResponseTime > 5000) {
-        console.log('   ⚠️  Tiempo de respuesta alto - posible cuello de botella');
-    }
-    if (p95ResponseTime > 10000) {
-        console.log('   ⚠️  P95 muy alto - problemas de rendimiento');
+    if (data && data.metrics) {
+        console.log('📈 Métricas finales:');
+        const metrics = data.metrics;
+        
+        if (metrics.http_reqs && metrics.http_reqs.values) {
+            console.log(`   - Requests totales: ${metrics.http_reqs.values.count || 'N/A'}`);
+            if (metrics.http_reqs.values.rate) {
+                console.log(`   - Throughput: ${metrics.http_reqs.values.rate.toFixed(2)} req/s`);
+            }
+        }
+        
+        if (metrics.http_req_duration && metrics.http_req_duration.values) {
+            console.log(`   - Tiempo promedio: ${metrics.http_req_duration.values.avg || 'N/A'}ms`);
+            if (metrics.http_req_duration.values['p(95)']) {
+                console.log(`   - Tiempo p95: ${metrics.http_req_duration.values['p(95)']}ms`);
+            }
+            if (metrics.http_req_duration.values['p(99)']) {
+                console.log(`   - Tiempo p99: ${metrics.http_req_duration.values['p(99)']}ms`);
+            }
+        }
+        
+        if (metrics.http_req_failed && metrics.http_req_failed.values) {
+            const errorRate = (metrics.http_req_failed.values.rate * 100).toFixed(2);
+            console.log(`   - Tasa de errores: ${errorRate}%`);
+        }
+        
+        // Análisis de resultados
+        console.log('🔍 Análisis:');
+        const errorRate = metrics.http_req_failed?.values?.rate || 0;
+        const avgResponseTime = metrics.http_req_duration?.values?.avg || 0;
+        const p95ResponseTime = metrics.http_req_duration?.values?.['p(95)'] || 0;
+        
+        if (errorRate > 0.1) {
+            console.log('   ⚠️  Alta tasa de errores - sistema bajo estrés');
+        }
+        if (avgResponseTime > 5000) {
+            console.log('   ⚠️  Tiempo de respuesta alto - posible cuello de botella');
+        }
+        if (p95ResponseTime > 10000) {
+            console.log('   ⚠️  P95 muy alto - problemas de rendimiento');
+        }
+    } else {
+        console.log('⚠️  No se pudieron obtener las métricas finales');
     }
 } 

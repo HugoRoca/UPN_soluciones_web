@@ -1,4 +1,5 @@
 import { simulateUserJourney, performLogin, getAppointments, getPatients, getDoctors, accessMainPage, accessDashboard } from './common.js';
+import { sleep } from 'k6';
 
 /**
  * PRUEBAS DE SPIKE
@@ -17,27 +18,20 @@ import { simulateUserJourney, performLogin, getAppointments, getPatients, getDoc
  */
 
 export const options = {
-    // Configuración de etapas para spike testing
     stages: [
-        // Carga normal inicial
         { duration: '1m', target: 10 },   // 10 usuarios por 1 minuto
         
-        // Primer spike
         { duration: '30s', target: 100 }, // Spike a 100 usuarios en 30 segundos
         { duration: '1m', target: 10 },   // Recuperación a 10 usuarios
         
-        // Segundo spike (más intenso)
         { duration: '30s', target: 200 }, // Spike a 200 usuarios en 30 segundos
         { duration: '1m', target: 10 },   // Recuperación a 10 usuarios
         
-        // Tercer spike (máximo)
         { duration: '30s', target: 300 }, // Spike a 300 usuarios en 30 segundos
         { duration: '1m', target: 10 },   // Recuperación final
     ],
 
-    // Umbrales de rendimiento para spike testing
     thresholds: {
-        // Tiempo de respuesta
         http_req_duration: [
             'p(50)<1500',   // 50% de requests < 1.5 segundos
             'p(90)<4000',   // 90% de requests < 4 segundos
@@ -45,20 +39,15 @@ export const options = {
             'p(99)<10000',  // 99% de requests < 10 segundos
         ],
         
-        // Tasa de errores
         http_req_failed: ['rate<0.10'],   // < 10% de errores
         
-        // Throughput
         http_reqs: ['rate>8'],            // Mínimo 8 requests/segundo
         
-        // Métricas personalizadas
         errors: ['rate<0.10'],            // < 10% de errores personalizados
     },
 
-    // Configuración de usuarios virtuales
     vus: 0,  // Se controla por las etapas
     
-    // Configuración de métricas
     ext: {
         loadimpact: {
             distribution: {
