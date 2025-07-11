@@ -3,10 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Other/javascript.js to edit this template
  */
 
-$(document).ready(function(){
-    $("#notification").hide();
-});
-
 $("#loginForm").on("submit", function(event) {
     event.preventDefault(); // Evita recargar la página
 
@@ -23,8 +19,8 @@ $("#loginForm").on("submit", function(event) {
             location.href = "/dashboard";
         },
         error: function(xhr, status, error) {
-            $("#notification").show();
-            $("#notification").html("Usuario y/o contraseña incorrectas.");
+            alert("Usuario y/o contraseña incorrectas.")
+            $("#username").focus();
         }
     });
 });
