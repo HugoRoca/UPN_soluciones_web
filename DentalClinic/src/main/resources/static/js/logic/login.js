@@ -16,7 +16,7 @@ $("#loginForm").on("submit", function(event) {
         data: JSON.stringify({ username, password }),
         success: function(data) {
             localStorage.setItem("token", JSON.stringify(data)); // Asegúrate de guardar los datos correctamente en localStorage
-            location.href = "/dashboard";
+            location.href = "/appointment";
         },
         error: function(xhr, status, error) {
             alert("Usuario y/o contraseña incorrectas.")

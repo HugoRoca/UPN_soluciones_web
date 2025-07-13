@@ -159,12 +159,7 @@ $(document).ready(function () {
             }
         ],
         responsive: true,
-        pageLength: 15,
-        layout: {
-            topStart: {
-                buttons: ['copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5']
-            }
-        }
+        pageLength: 15
     });
 });
 

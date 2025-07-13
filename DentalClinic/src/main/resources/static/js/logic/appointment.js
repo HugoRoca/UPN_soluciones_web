@@ -16,8 +16,7 @@ function editAppointment(data) {
     $("#status").val(data.status);
     $("#type").val(data.type);
 
-    const modal = new bootstrap.Modal(document.getElementById('appointmentModal'));
-    modal.show();
+    $('#appointmentModal').modal('show');
 }
 
 $(document).ready(function () {
@@ -45,8 +44,7 @@ $(document).ready(function () {
 
     $(document).on('click', '#add-appointment', function () {
         isNewAppointment = true;
-        const modal = new bootstrap.Modal(document.getElementById('appointmentModal'));
-        modal.show();
+        $('#appointmentModal').modal('show');
     });
 
     $(document).on('click', '.edit-btn', function () {

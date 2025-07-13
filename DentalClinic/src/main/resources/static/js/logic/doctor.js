@@ -56,8 +56,6 @@ $(document).ready(function () {
 });
 
 function loadTable() {
-    console.log("doctorData", doctorData);
-
     return $('#doctorTable').DataTable({
         data: doctorData,
         columns: [

@@ -15,27 +15,33 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-3">
-                    <label for="statusFilter" class="form-label">Filtrar por Estado</label>
-                    <select id="statusFilter" class="form-select">
-                        <option value="">Todos</option>
-                        <option value="PENDIENTE">Pendiente</option>
-                        <option value="CONFIRMADO">Confirmado</option>
-                        <option value="CANCELADO">Cancelado</option>
-                        <option value="COMPLETADO">Completado</option>
+
+            <form>
+                <div class="form-row align-items-center">
+                    <div class="col-auto">
+                        <label for="inlineFormInput">Filtrar por Estado</label>
+                        <select id="statusFilter" class="form-control">
+                            <option value="">Todos</option>
+                            <option value="PENDIENTE">Pendiente</option>
+                            <option value="CONFIRMADO">Confirmado</option>
+                            <option value="CANCELADO">Cancelado</option>
+                            <option value="COMPLETADO">Completado</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <label for="inlineFormInputGroup">Filtrar por Tipo</label>
+                        <select id="typeFilter" class="form-control">
+                            <option value="">Todos</option>
+                            <option value="SALUD">Salud</option>
+                            <option value="ESTETICO">Estetico</option>
                     </select>
+                    </div>
                 </div>
-                <div class="col-3">
-                    <label for="typeFilter" class="form-label">Filtrar por Tipo</label>
-                    <select id="typeFilter" class="form-select">
-                        <option value="">Todos</option>
-                        <option value="SALUD">Salud</option>
-                        <option value="ESTETICO">Estetico</option>
-                    </select>
-                </div>
-            </div>
-            <table id="appointmentsTable" class="table table-striped">
+            </form>
+
+            <hr>
+            <div class="table-responsive">
+                <table id="appointmentsTable" class="table table-bordered">
                 <thead>
                     <tr>
                         <th></th>
@@ -50,13 +56,18 @@
                 </thead>
                 <tbody></tbody>
             </table>
+            </div>
 
-            <div class="modal fade" id="appointmentModal" tabindex="-1">
-                <div class="modal-dialog">
+            <div class="modal fade" id="appointmentModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Gestionar Cita</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            <h5 class="modal-title" id="staticBackdropLabel">
+                                Gestionar Cita
+                            </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
                         </div>
                         <div class="modal-body">
                             <form id="appointmentForm">
@@ -65,13 +76,13 @@
                                 <!-- Selección de Paciente -->
                                 <div class="mb-3">
                                     <label for="patientSelect" class="form-label">Paciente</label>
-                                    <select id="patientSelect" class="form-select" style="width: 100%"></select>
+                                    <select id="patientSelect" class="form-control" style="width: 100%"></select>
                                 </div>
 
                                 <!-- Selección de Doctor -->
                                 <div class="mb-3">
                                     <label for="doctorSelect" class="form-label">Doctor</label>
-                                    <select id="doctorSelect" class="form-select" style="width: 100%">
+                                    <select id="doctorSelect" class="form-control" style="width: 100%">
                                         <option value="">Cargando doctores...</option>
                                     </select>
                                 </div>
@@ -91,7 +102,7 @@
                                 <!-- Estado -->
                                 <div class="mb-3">
                                     <label for="status" class="form-label">Estado</label>
-                                    <select id="status" class="form-select">
+                                    <select id="status" class="form-control">
                                         <option value="PENDIENTE">Pendiente</option>
                                         <option value="CONFIRMADO">Confirmado</option>
                                         <option value="CANCELADO">Cancelado</option>
@@ -101,7 +112,7 @@
 
                                 <div class="mb-3">
                                     <label for="type" class="form-label">Tipo</label>
-                                    <select id="type" class="form-select">
+                                    <select id="type" class="form-control">
                                         <option value="">Todos</option>
                                         <option value="SALUD">Salud</option>
                                         <option value="ESTETICO">Estetico</option>
@@ -110,13 +121,12 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                             <button type="button" class="btn btn-primary" id="saveAppointment">Guardar</button>
                         </div>
                     </div>
                 </div>
             </div>
-
             <script th:src="@{/js/logic/appointment.js}"></script>
         </main>
     </body>
